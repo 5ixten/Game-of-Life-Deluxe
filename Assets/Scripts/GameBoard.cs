@@ -13,6 +13,8 @@ public class GameBoard : MonoBehaviour {
     [SerializeField] private Tilemap tilemap;
     [SerializeField] private Tile aliveTile;
 
+     public bool paused = false;
+
     void Start() {
         foreach (Cell cell in startState) {
             UpdateCell(currentState, cell.Pos, cell.State);
@@ -63,6 +65,8 @@ public class GameBoard : MonoBehaviour {
     }
 
     private void UpdateNextState() {
+        if (paused) return;
+
         nextState = CloneState(currentState);
         HashSet<Vector2Int> processed = new();
 
