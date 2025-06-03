@@ -1286,7 +1286,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: ad562c7d6cdc23348a93afbc90c8c6c4, type: 2}
+      - m_Target: {fileID: 11400000, guid: 971eca207fd94044d8e534c20bd7533d, type: 2}
         m_TargetAssemblyTypeName: GameEvent, Assembly-CSharp
         m_MethodName: TriggerEvent
         m_Mode: 1
@@ -2782,7 +2782,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 11400000, guid: 971eca207fd94044d8e534c20bd7533d, type: 2}
+      - m_Target: {fileID: 11400000, guid: ad562c7d6cdc23348a93afbc90c8c6c4, type: 2}
         m_TargetAssemblyTypeName: GameEvent, Assembly-CSharp
         m_MethodName: TriggerEvent
         m_Mode: 1
