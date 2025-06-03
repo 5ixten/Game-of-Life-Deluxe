@@ -49,7 +49,7 @@ public class BuildSystem : MonoBehaviour
         tilemap.SetTile(new Vector3Int(currentCell.x, currentCell.y, 0), tile); // Set new tile at current cell
 
         // Place cell
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButton(0)) {
             gameBoard.EditCell(currentCell, BuildState == BuildState.Place ? CellState.Alive : CellState.Dead);
         }
     }
