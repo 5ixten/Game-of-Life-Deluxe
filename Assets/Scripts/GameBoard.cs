@@ -2,18 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System;
 
 public class GameBoard : MonoBehaviour {
     private Dictionary<Vector2Int, Cell> currentState = new();
     private Dictionary<Vector2Int, Cell> nextState = new();
 
     [SerializeField] private Cell[] startState;
-    public float updateInterval = 0.05f;
 
     [SerializeField] private Tilemap tilemap;
     [SerializeField] private Tile aliveTile;
+    
+    // Properties
+    public bool paused = true;
+    public float updateInterval = 0.15f;
 
-     public bool paused = false;
+    private const float SPEEDCHANGE = 0.05f;
+    private const float MINSPEED = 0.05f;
+    private const float MAXSPEED = 1f;
+
+    // Singleton
+    public static GameBoard Instance { get; private set; }
+
+    private void Awake() {
+        if (Instance != null && Instance != this) {
+            Destroy(gameObject);
+            return;
+        } else {
+            DontDestroyOnLoad(this);
+            Instance = this;
+        }
+    }
 
     void Start() {
         foreach (Cell cell in startState) {
@@ -22,6 +41,23 @@ public class GameBoard : MonoBehaviour {
 
         nextState = CloneState(currentState);
         StartCoroutine(UpdateBoard());
+    }
+
+    // Actions
+    public void TogglePause() {
+        paused = !paused;
+    }
+
+    public void SpeedUp() {
+        updateInterval = Mathf.Max(updateInterval - SPEEDCHANGE, MINSPEED);
+        updateInterval = (float)Math.Round(updateInterval, 2);
+
+    }
+
+    public void SpeedDown() {
+        updateInterval = Mathf.Min(updateInterval + SPEEDCHANGE, MAXSPEED);
+        updateInterval = (float)Math.Round(updateInterval, 2);
+
     }
 
     private Dictionary<Vector2Int, Cell> CloneState(Dictionary<Vector2Int, Cell> source) {
@@ -115,6 +151,10 @@ public class GameBoard : MonoBehaviour {
         }
     }
 
+    public void EditCell(Vector2Int pos, CellState state) {
+        UpdateCell(nextState, pos, state);
+    }
+
     private void UpdateCell(Dictionary<Vector2Int, Cell> grid, Vector2Int pos, CellState state) {
         // Update state if cell exists
         if (grid.TryGetValue(pos, out var cell)) {
@@ -146,8 +186,6 @@ public class GameBoard : MonoBehaviour {
     }
 
     private IEnumerator UpdateBoard() {
-        var interval = new WaitForSeconds(updateInterval);
-
         while (true) {
             tilemap.ClearAllTiles();
             foreach (var kvp in nextState) {
@@ -158,7 +196,7 @@ public class GameBoard : MonoBehaviour {
 
             ClenseCells(nextState);
             currentState = CloneState(nextState);
-            yield return interval;
+            yield return new WaitForSeconds(updateInterval);
             UpdateNextState();
         }
     }

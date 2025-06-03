@@ -24,10 +24,10 @@ public class CameraController : MonoBehaviour {
     }
 
     void MoveCamera() {
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButtonDown(1)) {
             isDragging = true;
         }
-        if (Input.GetMouseButtonUp(0)) {
+        if (Input.GetMouseButtonUp(1)) {
             isDragging = false;
         }
 
@@ -53,6 +53,5 @@ public class CameraController : MonoBehaviour {
         float zPos = Mathf.Clamp(-(transform.position.z + scrollValue), minScroll, maxScroll);
    
         transform.position = new Vector3(transform.position.x, transform.position.y, -zPos);
-        //camera.orthographicSize = Mathf.Clamp(camera.orthographicSize + scrollValue, minScroll, maxScroll);
     }
 }
